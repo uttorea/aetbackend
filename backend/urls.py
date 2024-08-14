@@ -22,5 +22,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('contact/', views.contact_view, name='contact'),
     path('havea/', views.haveaproject, name='hava'),
+    path('send_brochure_request/', views.send_brochure_request, name='send_brochure_request'),
 
 ]
