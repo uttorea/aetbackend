@@ -33,7 +33,7 @@ def contact_view(request):
                 subject,
                 email_message,
                 email,  # From email (user's email)
-                ['nikhilrai662@gmail.com'],  # To email (your email)
+                ['info@aethroneaerospace.com'],  # To email (your email)
                 fail_silently=False,
             )
 
@@ -50,9 +50,13 @@ def contact_view(request):
 
 
 import json
+import logging
 from django.core.mail import send_mail
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+
+# Set up logging
+logger = logging.getLogger(__name__)
 
 @csrf_exempt
 def haveaproject(request):
@@ -75,14 +79,20 @@ def haveaproject(request):
             Name: {name}
             Email: {email}
             Message: {message}
+            Subject: {subject}
             """
+
+            # Log the email content for debugging
+            logger.info(f"Email Subject: {email_subject}")
+            logger.info(f"Email Message: {email_message}")
+            logger.info(f"From Email: {email}")
 
             # Send the email using the user's email as the sender
             send_mail(
                 email_subject,
                 email_message,
-                email,  # From email (user's email)
-                ['nikhilrai662@gmail.com'],  # To email (your email)
+                'your-email@example.com',  # Replace with a valid sender email
+                ['info@aethroneaerospace.com'],  # To email
                 fail_silently=False,
             )
 
@@ -90,15 +100,19 @@ def haveaproject(request):
             return JsonResponse({"message": "Message sent successfully!"}, status=200)
 
         except json.JSONDecodeError:
+            logger.error("Invalid JSON data received")
             return JsonResponse({"error": "Invalid JSON data."}, status=400)
+
         except Exception as e:
-            return JsonResponse({"error": str(e)}, status=500)
+            # Log the exception to help with debugging
+            logger.error(f"Server Error: {e}")
+            return JsonResponse({"error": "Internal Server Error"}, status=500)
 
     # Return an error if the request method is not POST
     return JsonResponse({"error": "Invalid request method."}, status=400)
 
 
-    from django.core.mail import send_mail
+from django.core.mail import send_mail
 import logging
 
 logger = logging.getLogger(__name__)
@@ -124,7 +138,7 @@ def send_brochure_request(request):
                 f"This user requested the brochure for the {system}."
             )
             from_email = 'your_email@example.com'
-            fixed_recipient_email = 'nikhilrai662@gmail.com'
+            fixed_recipient_email = 'info@aethroneaerospace.com'
             
             # Send the email to the fixed recipient
             send_mail(subject, message, from_email, [fixed_recipient_email])
